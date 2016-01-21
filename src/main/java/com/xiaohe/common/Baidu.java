@@ -72,6 +72,15 @@ public class Baidu {
 			System.out.println("百度学术，跳过");
 			return null;
 		}
+		if (!result.select("[tpl=exactqa]").isEmpty()) {//baidu xueshu item
+			System.out.println("百度百科，跳过");
+			return null;
+		}
+		if(result.select("h3").text().contains("百度知道")){
+			//知道数据好多是拷贝百科的
+			System.out.println("百度知道，跳过");
+			return null;
+		}
 		result.select("h3").remove();
 		result.select(".newTimeFactor_before_abs").remove();
 		result.select(".f13").remove();

@@ -1,6 +1,8 @@
 package com.xiaohe.crawler;
 
 import java.util.ArrayList;
+
+import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -54,7 +56,10 @@ public class PageDownload implements PageProcessor{
 				continue;
 			}
 			//HanLPParser.getNERtags(res);
-			String[] sentence = res.split("[.。;；!！？?]|(...)");
+			if (res.contains("...")) {
+				res = res.replaceAll("(\\.){3}", ".");
+			}
+			String[] sentence = res.split("[.。;；!！？?]");
 			for(String sen : sentence){
 				if (checkEntity(sen, query)) {// check the query result
 					resultList.add(sen);
@@ -63,10 +68,12 @@ public class PageDownload implements PageProcessor{
 		}
 	}
 	
-	public static ArrayList<String> getSummary(String url) {
+	public static ArrayList<String> getSummary(String Query) {
+		String queryUrl = Baidu.getFuzzyBaiduHttpUrl(Query);
 		resultList = new ArrayList<String>();
+		query = Query;
     	Spider spider = Spider.create(new PageDownload());
-    	spider.addUrl(url);
+    	spider.addUrl(queryUrl);
     	spider.run();
     	spider.stop();
 		return resultList;

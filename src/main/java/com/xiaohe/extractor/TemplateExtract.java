@@ -42,8 +42,7 @@ public class TemplateExtract {
 			if (value.isEmpty()) {
 				continue;
 			}
-			String queryUrl = Baidu.getFuzzyBaiduHttpUrl(title + " " + value);
-			ArrayList<String> resultList = PageDownload.getSummary(queryUrl);
+			ArrayList<String> resultList = PageDownload.getSummary(title + " " + value);
 			if (!resultList.isEmpty()) {
 				System.out.println("extract " + title + " : " + key);
 				for(int i=0; i<resultList.size(); i++){
