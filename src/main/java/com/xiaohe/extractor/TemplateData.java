@@ -39,7 +39,7 @@ public class TemplateData {
 		Document doc = Jsoup.parse(pagefile, "utf-8");
 		//get inforbox
 		ArrayList<String> properList = getBox(doc);
-		if(properList.isEmpty()){
+		if(properList == null || properList.isEmpty()){
 			return 0;
 		}
 		System.out.println("crawler the " + title);
@@ -114,11 +114,11 @@ public class TemplateData {
 	
 	public static void main(String[] args) throws Exception {
 		TemplateData templateData = new TemplateData();
-		String floderPath = args[0];
-		outputPath = args[1];
 		if (args.length != 2) {
 			exit_with_help();
 		}
+		String floderPath = args[0];
+		outputPath = args[1];
 		File fileFloder = new File(floderPath);
 		if (fileFloder.isDirectory()) {
 			File[] pagefile = fileFloder.listFiles();
@@ -129,7 +129,8 @@ public class TemplateData {
 				}
 			}
 		}
-		//templateData.process(new File("/home/riter/Parser/梅利莎·乔治_百度百科.html"));
+		//templateData.process(new File("/home/riter/Parser/毛里奇奥·波利尼"));
+		//templateData.process(new File("/home/riter/Parser/李思彤"));
 		System.out.println("reslove over");
 	}
 }
