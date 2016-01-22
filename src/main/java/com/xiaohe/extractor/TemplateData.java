@@ -46,7 +46,10 @@ public class TemplateData {
 		for (Iterator iterator = properList.iterator(); iterator.hasNext();) {
 			String proper = (String) iterator.next();
 			String[] str = proper.split(":");
-			str[0] = NoiseReduction.removeAllSymbol(str[0]);;
+			if (str.length != 2) {
+				continue;
+			}
+			str[0] = NoiseReduction.removeAllSymbol(str[0]);
 			if (str[0].equals("出生地")) {
 				birthPlace++;
 			}else if (str[0].equals("出生日期")) {

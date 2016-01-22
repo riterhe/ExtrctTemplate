@@ -5,10 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import com.xiaohe.common.Baidu;
-import com.xiaohe.crawler.DownloadHtmlPage;
 import com.xiaohe.crawler.PageDownload;
-import com.xiaohe.crawler.ParserHtmlPage;
 import com.xiaohe.util.FileOperate;
 import com.xiaohe.util.NoiseReduction;
 
@@ -54,6 +51,7 @@ public class TemplateExtract {
 				}
 			}
 		}
+		br.close();
 	}
 	public static void main(String[] args) throws Exception {
 		TemplateExtract templateExtract = new TemplateExtract();

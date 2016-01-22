@@ -22,6 +22,7 @@ public class FileOperate {
 			System.out.println(strRead);
 		}
 		bufferedReader.close();
+		fileReader.close();
 	}
 	public static void WriteFile(String line) throws Exception {
 		WriteFile(defaultOutPutFile, line);
@@ -34,6 +35,7 @@ public class FileOperate {
 		bufferedWriter.write("\n");
 		bufferedWriter.flush();
 		bufferedWriter.close();
+		fileWriter.close();
 	}
 	
 	public static void main(String[] args) throws Exception {
