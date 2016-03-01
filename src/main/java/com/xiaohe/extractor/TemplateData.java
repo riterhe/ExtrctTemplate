@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.xiaohe.util.FileOperate;
 import com.xiaohe.util.NoiseReduction;
 
 public class TemplateData {
@@ -71,7 +72,8 @@ public class TemplateData {
 			}
 			String info = title + "###" + proper;
 			try {
-				FileOperate.WriteFile(outputPath, info);
+				FileUtils.writeStringToFile(new File(outputPath), info, "UTF-8", true);
+				//FileOperate.WriteFile(outputPath, info);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

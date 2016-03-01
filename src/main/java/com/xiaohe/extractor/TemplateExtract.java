@@ -5,8 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import org.apache.commons.io.FileUtils;
+
 import com.xiaohe.crawler.PageDownload;
-import com.xiaohe.util.FileOperate;
 import com.xiaohe.util.NoiseReduction;
 
 public class TemplateExtract {
@@ -47,7 +48,8 @@ public class TemplateExtract {
 					//System.out.println(result);
 					result = result.replace(title, "#####");
 					result = result.replace(value, "*****");
-					FileOperate.WriteFile(outputPath + "/" + key, result);
+					FileUtils.writeStringToFile(new File(outputPath + "/" + key), result, "UTF-8", true);
+					//FileOperate.WriteFile(outputPath + "/" + key, result);
 				}
 			}
 		}
