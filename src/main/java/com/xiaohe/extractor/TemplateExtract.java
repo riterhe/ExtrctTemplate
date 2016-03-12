@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 
+import com.xiaohe.common.Baidu;
 import com.xiaohe.crawler.PageDownload;
 import com.xiaohe.util.NoiseReduction;
 
@@ -25,6 +26,7 @@ public class TemplateExtract {
 		FileReader fr = new FileReader(new File(inputPath));
 		BufferedReader br = new BufferedReader(fr);
 		String line = "";
+		Baidu baidu = new Baidu();
 		while((line = br.readLine()) != null){
 			String[] tokens = line.split("###");
 			String title = tokens[0];
@@ -40,7 +42,7 @@ public class TemplateExtract {
 			if (value.isEmpty()) {
 				continue;
 			}
-			ArrayList<String> resultList = PageDownload.getSummary(title + " " + value);
+			ArrayList<String> resultList = baidu.getSummary(title + " " + value);
 			if (!resultList.isEmpty()) {
 				System.out.println("extract " + title + " : " + key);
 				for(int i=0; i<resultList.size(); i++){

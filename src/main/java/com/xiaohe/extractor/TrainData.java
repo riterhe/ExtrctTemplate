@@ -1,14 +1,13 @@
 package com.xiaohe.extractor;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import com.xiaohe.crawler.PageDownload;
-import com.xiaohe.util.NoiseReduction;
+import com.xiaohe.common.Baidu;
+import net.sf.json.JSONArray;
 
 public class TrainData {
 	//private static String pagePath;
@@ -22,47 +21,35 @@ public class TrainData {
 		System.exit(1);
 	}
 	private void process() throws Exception{
-		FileReader fr = new FileReader(new File(inputPath));
-		BufferedReader br = new BufferedReader(fr);
-		String line = "";
-		while((line = br.readLine()) != null){
-			String[] tokens = line.split("###");
-			String title = tokens[0];
-			if (title.contains("（")) {
-				title = title.substring(0, title.indexOf("（"));
-			}
-			String[] pair = tokens[1].split(":");
-			if (pair.length != 2) {
+		List<String> lines = FileUtils.readLines(new File(inputPath), "UTF-8");
+		Baidu baidu = new Baidu();
+		for (int i = 0; i < lines.size(); i++) {
+			String[] tokens = lines.get(i).split("\t");//title, property, value
+			if (tokens.length != 3) {
 				continue;
 			}
-			String key = pair[0];
-			String value = NoiseReduction.removeAllSymbol(pair[1]);
-			if (value.isEmpty()) {
-				continue;
-			}
-			ArrayList<String> resultList = PageDownload.getSummary(title + " " + value);
-			if (!resultList.isEmpty()) {
-				System.out.println("extract " + title + " : " + key);
-				for(int i=0; i<resultList.size(); i++){
-					String result = resultList.get(i);
-					//System.out.println(result);
-					result = result.replace(title, "#####");
-					result = result.replace(value, "*****");
-					FileUtils.writeStringToFile(new File(outputPath + "/" + key), result, "UTF-8", true);
-					//FileOperate.WriteFile(outputPath + "/" + key, result);
+			ArrayList<String> resultList = baidu.getSummary(tokens[0] + " " + tokens[2]);
+			if (resultList != null && !resultList.isEmpty()) {
+				System.out.println("extract " + tokens[0] + " : " + tokens[2]);
+				for(int j=0; j<resultList.size(); j++){
+					String result = resultList.get(j);
+					JSONArray dataArray = new JSONArray();
+					dataArray.add(0, tokens[0]);
+					dataArray.add(1, tokens[1]);
+					dataArray.add(2, tokens[2]);
+					dataArray.add(3, result);
+					FileUtils.writeStringToFile(new File(outputPath), dataArray.toString()+"\n", "UTF-8", true);
 				}
 			}
 		}
-		br.close();
 	}
 	public static void main(String[] args) throws Exception {
-		TrainData templateExtract = new TrainData();
+		TrainData trainData = new TrainData();
 		if (args.length != 2) {
 			exit_with_help();
 		}
-		//pagePath = args[0];
 		inputPath = args[0];
 		outputPath = args[1];
-		templateExtract.process();
+		trainData.process();
 	}
 }

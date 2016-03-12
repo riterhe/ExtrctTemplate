@@ -18,6 +18,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 public class PageDownload implements PageProcessor{
 	private static ArrayList<String> resultList;
 	private static String query;
+	private Baidu baidu = new Baidu();
 	private static Logger logger = Logger.getLogger(PageDownload.class.getName());
 	
     private Site site = Site.me()//.setHttpProxy(new HttpHost("127.0.0.1",8888))
@@ -52,7 +53,7 @@ public class PageDownload implements PageProcessor{
 		for (int i = 1; i <= size; i++) {
 			Element result = content_left.getElementById(String.valueOf(i));
 			String res = null;
-			if ((result == null) || ((res = Baidu.getElementText(result)) == null)) {
+			if ((result == null) || ((res = baidu.getElementText(result)) == null)) {
 				continue;
 			}
 			//HanLPParser.getNERtags(res);
@@ -68,8 +69,8 @@ public class PageDownload implements PageProcessor{
 		}
 	}
 	
-	public static ArrayList<String> getSummary(String Query) {
-		String queryUrl = Baidu.getFuzzyBaiduHttpUrl(Query);
+	public  ArrayList<String> getSummary(String Query) {
+		String queryUrl = baidu.getFuzzyBaiduHttpUrl(Query);
 		resultList = new ArrayList<String>();
 		query = Query;
     	Spider spider = Spider.create(new PageDownload());
