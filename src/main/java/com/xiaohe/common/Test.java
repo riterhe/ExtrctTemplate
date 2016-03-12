@@ -1,20 +1,45 @@
 package com.xiaohe.common;
 
-import com.xiaohe.util.NoiseReduction;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 public class Test {
-	public static void main(String[] args) {
-		String res = " “大陈,小陈,赶紧出来,山东大汉又来看你们啦。 ”当看到史智勤出现在长沙...”老家在武城县,现为中科院院士、国防科学技术大学校长的杨学军对史智勤的...";
-		if (res.contains("...")) {
-			System.out.println(true);
-			res = res.replaceAll("(\\.){3}", ".");
-			System.out.println(res);
-			String[] sentence = res.split("[.。;；!！？?]");
-			for(String sen : sentence){
-				System.out.println(sen);
+	public static void main(String[] args) throws IOException {
+		//String res = "1980-04-30";
+		Document document = Jsoup.parse(new File("/home/riter/RE/page/test.html"), "UTF-8");
+		String text = document.text();
+		System.out.println(text);
+		Elements dtList = document.select("dt");
+		Elements ddList = document.select("dd");
+		StringBuilder sb = new StringBuilder();
+		if ((!dtList.isEmpty()) && (!ddList.isEmpty())) {
+			for (int i = 0; i < dtList.size(); i++) {
+				String property = dtList.get(i).text().replaceAll("[^\u4e00-\u9fa5]", "");
+				String value = ddList.get(i).text();
+				String[] result = null;
+				if (StringUtils.equals(property, "主要成就")) {
+					continue;
+					//编写比较乱，暂时不处理
+				}else{
+					if (StringUtils.endsWith(value, "等") && value.length() >1 ) {
+						value = StringUtils.removeEnd(value, "等");
+					}
+					if (value.matches("[^\u4e00-\u9fa5]+")) {
+						System.out.println("no chinese");
+						result = value.split(",|;|；|、|，");
+					}else{
+						System.out.println("chinese");
+						result = value.split(",|;|；|、|，| ");
+					}
+				}
+				System.out.println(result.length + " : " + Arrays.toString(result));
 			}
-		}else{
-			System.out.println(res);
 		}
 	}
 }

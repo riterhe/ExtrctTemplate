@@ -13,8 +13,20 @@ import org.jsoup.select.Elements;
 public class Baidu {
 	private static Logger logger = Logger.getLogger(Baidu.class.getName());
 	private static String baiduUrl = "http://www.baidu.com/";
+	private static String baikeUrl = "http://baike.baidu.com";
 	private static String pattern = "^(http://baike.baidu.com/view/).*\\.htm$|^(http://baike.baidu.com/subview/).*\\.htm$";
+	public static String TITLE;
 	
+	/**
+	 * @param query
+	 * @return 百度百科的url
+	 */
+	public String getBaikeItemUrl(String query){
+		StringBuilder httpArg = new StringBuilder();
+		httpArg.append("/search/word?word=" + query);
+		String httpUrl = baikeUrl + httpArg.toString();
+		return httpUrl;
+	}
 	/**
 	 * 模糊查找
 	 * @param query
@@ -143,14 +155,14 @@ public class Baidu {
 	
 	/**
 	 * @param Jsoup加载后的doc
-	 * @return 返回一个实体inforbox信息
+	 * @return 返回一个实体inforbox 的element
 	 */
-	public String getBox(Document doc) {
+	public Element getBox(Document doc) {
 		Elements basicInfos = doc.getElementsByClass("basic-info");
 		if (basicInfos.isEmpty()) {
 			logger.error("there is no inforbox !");
 			return null;
 		}
-		return getBox(basicInfos.first());
+		return basicInfos.first();
 	}
 }

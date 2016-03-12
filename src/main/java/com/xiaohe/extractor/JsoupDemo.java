@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import com.xiaohe.common.Baidu;
+
 public class JsoupDemo {
 	private static Logger logger = Logger.getLogger(JsoupDemo.class.getName());
 	
@@ -16,7 +18,8 @@ public class JsoupDemo {
 		try {
 			doc = Jsoup.parse(new File(filePath), "utf-8");
 			TemplateData t = new TemplateData();
-			ArrayList<String> properList = t.getBox(doc);
+			Baidu baidu = new Baidu();
+			String properList = baidu.getBox(doc.getElementsByClass("basic-info").first());
 			if(properList.isEmpty()){
 				return;
 			}
