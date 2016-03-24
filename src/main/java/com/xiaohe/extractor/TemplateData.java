@@ -8,10 +8,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import com.xiaohe.common.Baidu;
 import com.xiaohe.process.ElementProcessor;
 import com.xiaohe.process.FileProcess;
+import com.xiaohe.process.LineProcessor;
 
 public class TemplateData implements FileProcess{
 	private static String OUTPUTPATH;
@@ -39,9 +41,14 @@ public class TemplateData implements FileProcess{
 			return;
 		}
 		//get inforbox
-		Element inforbox = baidu.getBox(doc);
+		/*Element inforbox = baidu.getBox(doc);
 		if (inforbox != null) {
 			processor.resolveInforbox(inforbox);
+		}*/
+		//get open-tag
+		Element openTag = baidu.getTag(doc);
+		if (openTag != null) {
+			processor.resolveTag(openTag);
 		}
 	}
 	
@@ -91,6 +98,16 @@ public class TemplateData implements FileProcess{
 					public void resolveInforbox(Element inforbox) {
 						getResult(inforbox);
 					}
+
+					public void resolveTag(Element tag) {
+						// TODO Auto-generated method stub
+						try {
+							FileUtils.writeStringToFile(new File(OUTPUTPATH), Baidu.TITLE +"\t" + tag.text() +"\n", "UTF-8", true);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				});
 			}
 		}
@@ -101,5 +118,10 @@ public class TemplateData implements FileProcess{
 			}
 		});*/
 		System.out.println("reslove over");
+	}
+
+	public void process(File inputPath, File outputPath, LineProcessor processor) {
+		// TODO Auto-generated method stub
+		
 	}
 }

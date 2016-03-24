@@ -1,29 +1,25 @@
 package com.xiaohe.common;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-
-import org.apache.commons.lang3.StringUtils;
-
-import net.sf.json.JSONArray;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
 
 public class Test {
 	public static void main(String[] args) throws IOException {
 		//String res = "1980-04-30";
-		JSONArray jsonArray = new JSONArray();
-		jsonArray.add(0, "title");
-		jsonArray.add(1, "property");
-		jsonArray.add(2, "value");
-		jsonArray.add(2, "line");
-		System.out.println(jsonArray.toString());
-		String result = jsonArray.toString();
-		String teString = "[\"title\",\"property\",\"line\",\"value\"]";
-		JSONArray array = JSONArray.fromObject(teString);
-		for(int i=0; i<array.size(); i++){
-			System.out.println(array.get(i));
+		LineIterator iterator = FileUtils.lineIterator(new File("/media/riter/data/硕士/实验数据/trainData/filtedData"));
+		int count = 0;
+		while(iterator.hasNext()){
+			String line = iterator.next();
+			if (count == 0) {
+				FileUtils.writeStringToFile(new File("/media/riter/data/硕士/实验数据/trainData/filtedData2"), line + "\n", "UTF-8", true);
+			}
+			count++;
+			if (count == 4) {
+				count = 0;
+			}
 		}
-		String string = "hah hehe";
-		String[] token = StringUtils.split(string, " ");
-		System.out.println(Arrays.toString(token));
+			
 	}
 }

@@ -226,4 +226,17 @@ public class Baidu {
 		}
 		return resultList;
 	}
+	
+	/**
+	 * @param Jsoup加载后的doc
+	 * @return 返回Tag element
+	 */
+	public Element getTag(Document doc) {
+		Element openTagItem = doc.getElementById("open-tag-item");
+		if (openTagItem == null) {
+			logger.error("there is no openTagTitle !");
+			return null;
+		}
+		return openTagItem;
+	}
 }
